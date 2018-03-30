@@ -1,9 +1,13 @@
 FROM ypcs/debian:buster
 
-RUN \
-    echo "deb http://deb.debian.org/debian sid main" >/etc/apt/sources.list.d/sid.list && \
-    /usr/local/sbin/docker-upgrade && \
+RUN /usr/local/sbin/docker-upgrade && \
     apt-get --assume-yes install \
-        nodejs \
-        npm && \
+        curl && \
+    /usr/local/sbin/docker-cleanup
+
+RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
+
+RUN /usr/local/sbin/docker-upgrade && \
+    apt-get --assume-yes install \
+        nodejs && \
     /usr/local/sbin/docker-cleanup
