@@ -1,9 +1,15 @@
-FROM ypcs/debian:buster
+FROM ypcs/debian:bullseye
 
 RUN \
-    echo "deb http://deb.debian.org/debian sid main" >/etc/apt/sources.list.d/sid.list && \
-    /usr/local/sbin/docker-upgrade && \
+    /usr/lib/docker-helpers/apt-setup && \
+    /usr/lib/docker-helpers/apt-upgrade && \
     apt-get --assume-yes install \
         nodejs \
         npm && \
-    /usr/local/sbin/docker-cleanup
+    /usr/lib/docker-helpers/apt-cleanup
+
+RUN adduser --disabled-password --gecos "user,,," user && \
+    mkdir -p /app && \
+    chown -R user:user /app
+
+USER user
